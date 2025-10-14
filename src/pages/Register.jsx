@@ -102,7 +102,7 @@ function Register() {
         <p className="text-gray-600">
           Don't have an account?
           <Link to="/login" className="text-primary">
-            Sign up
+            Sign In
           </Link>
         </p>
       </div>

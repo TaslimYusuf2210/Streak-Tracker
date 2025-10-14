@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   email: yup
@@ -20,8 +21,11 @@ function Login() {
         resolver: yupResolver(schema),
     });
 
+    const navigate = useNavigate()
+
     const onSubmit = async (data) => {
     console.log("Form data:", data);
+    navigate("/dashboard")
     };
   return (
     <div className="flex justify-center items-center h-screen">
