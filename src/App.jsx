@@ -11,6 +11,7 @@ import './App.css'
 
 function App() {
   return (
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-50">
     <Router>
       <Routes>
         {/* Public routes */}
@@ -26,6 +27,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+    </div>
   )
 }
 
