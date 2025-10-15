@@ -1,7 +1,89 @@
+import { AiOutlineFire } from "react-icons/ai";
+import { CiCircleCheck } from "react-icons/ci";
+import { GiTrophyCup } from "react-icons/gi";
+import { LuTarget } from "react-icons/lu";
+import Card from "../components/card";
+import Task from "../components/Task";
+
+const tasks = [
+    {
+        tasks: "Morning Exercise",
+        days: 7
+    },
+    {
+        tasks: "Read for 30 minutes",
+        days: 14
+    },
+    {
+        tasks: "Drink 8 glasses of water",
+        days: 5
+    },
+    {
+        tasks: "Meditate",
+        days: 21
+    },
+    {
+        tasks: "Practice coding",
+        days: 3
+    },
+]
+
+const cards = [
+    {
+        title: "Total Habits",
+        icon: <LuTarget />,
+        value: 8,
+        footer: "Active habits tracked"
+    },
+    {
+        title: "Completed Today",
+        icon: <CiCircleCheck />,
+        value: 5/8,
+        footer: "63% completion rate"
+    },
+    {
+        title: "Current Streaks",
+        icon: <AiOutlineFire />,
+        value: 3,
+        footer: "Active streaks running"
+    },
+    {
+        title: "Longest Streak",
+        icon: <GiTrophyCup />,
+        value: 21,
+        footer: "Days in a row"
+    },
+]
+
 function Dashboard() {
     return ( 
-        <div>
-            
+        <div className="space-y-8">
+            <div className="text-left">
+                <h1 className="font-bold text-4xl">Welcome, Rufai!</h1>
+                <p className="text-lg text-gray-600">Here's your progress overview</p>
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+                {cards.map((card, index) => (
+                <Card
+                key={index}
+                title={card.title}
+                icon={card.icon}
+                value={card.value}
+                footer={card.footer}
+                >
+
+                </Card>
+                ))}
+            </div>
+            <div>
+                <div className="flex justify-between">
+                    <h3 className="text-3xl font-bold">Today's Tasks</h3>
+                    <button className="px-4 py-2 bg-primary rounded-lg text-white">View All Tasks</button>
+                </div>
+                <div className="mt-8">
+                    <Task></Task>
+                </div>
+            </div>
         </div>
      );
 }

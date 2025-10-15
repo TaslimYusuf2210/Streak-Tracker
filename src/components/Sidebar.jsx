@@ -3,6 +3,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { FaTasks } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 import { MdLogout } from "react-icons/md";
+import { FaFire } from "react-icons/fa";
 
 const items = [
     {
@@ -24,9 +25,10 @@ const items = [
 
 function Sidebar() {
     return ( 
-        <div className="min-w-56 text-center justify-between flex flex-col">
+        <div className="min-w-56 text-center bg-white justify-between flex flex-col">
             <div>
-                <div className="p-4">
+                <div className="p-4 flex items-center justify-center gap-2">
+                    <div className="p-2 rounded-lg bg-primary"><FaFire  className="text-white"/></div>
                     <h2 className="text-2xl font-bold">Streak Tracker</h2>
                 </div>
                 <hr />
