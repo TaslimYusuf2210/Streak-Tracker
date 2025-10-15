@@ -25,7 +25,7 @@ const items = [
 
 function Sidebar() {
     return ( 
-        <div className="min-w-56 text-center bg-white justify-between flex flex-col">
+        <div className="min-w-56 text-center bg-white justify-between flex flex-col w-64 h-screen sticky top-0 shadow-md">
             <div>
                 <div className="p-4 flex items-center justify-center gap-2">
                     <div className="p-2 rounded-lg bg-primary"><FaFire  className="text-white"/></div>
