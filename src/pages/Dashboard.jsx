@@ -59,7 +59,7 @@ function Dashboard() {
     return ( 
         <div className="space-y-8">
             <div className="text-left">
-                <h1 className="font-bold text-4xl">Welcome, Rufai!</h1>
+                <h1 className="font-bold text-3xl">Welcome, Rufai!</h1>
                 <p className="text-lg text-gray-600 font-medium">Here's your progress overview</p>
             </div>
             <div className="grid grid-cols-4 gap-4">

@@ -1,6 +1,7 @@
 import { IoIosAdd } from "react-icons/io";
 import TaskTabs from "../components/TaskTabs";
 import TaskList from "../components/TaskList";
+import { useState } from "react";
 
 const testTasks = [
   { id: 1, task: "Morning Exercise", type: "Daily", currentStreak: 7, bestStreak: 14 },
@@ -12,6 +13,9 @@ const testTasks = [
 ];
 
 function Tasks() {
+    const [filter, setFilter] = useState("All")
+
+    const filteredTasks = filter === "All" ? testTasks : testTasks.filter((t) => t.type === filter)
     return ( 
         <div>
             <div className="flex justify-between items-center">
@@ -28,7 +32,7 @@ function Tasks() {
                 </button>
             </div>
             <div>
-                <TaskTabs></TaskTabs>
+                <TaskTabs currentTab={setFilter}></TaskTabs>
                 {testTasks.map((item) => (
                     <TaskList
                     key={item.id}
