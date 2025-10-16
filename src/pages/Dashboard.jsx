@@ -60,7 +60,7 @@ function Dashboard() {
         <div className="space-y-8">
             <div className="text-left">
                 <h1 className="font-bold text-4xl">Welcome, Rufai!</h1>
-                <p className="text-lg text-gray-600">Here's your progress overview</p>
+                <p className="text-lg text-gray-600 font-medium">Here's your progress overview</p>
             </div>
             <div className="grid grid-cols-4 gap-4">
                 <Card
@@ -114,11 +114,12 @@ function Dashboard() {
             <div>
                 <div className="flex justify-between">
                     <h3 className="text-3xl font-bold">Today's Tasks</h3>
-                    <button className="px-4 py-2 bg-primary rounded-lg text-white">View All Tasks</button>
+                    <button className="px-4 py-2 bg-primary rounded-lg text-white font-medium hover:bg-blue-400">View All Tasks</button>
                 </div>
                 <div className="mt-8 space-y-4">
                     {tasks.map((item, index) => (
                         <Task
+                        key={index}
                         task={item.tasks}
                         days={item.days}
                         >

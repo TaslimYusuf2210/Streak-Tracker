@@ -5,7 +5,7 @@ import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Settings from './pages/Settings'
-import Tasks from './pages/Tasks'
+import Tasks from './pages/MyTasks'
 import DashboardLayout from './layout/DashboardLayout'
 import './App.css'
 
