@@ -3,6 +3,10 @@ import ToggleSwitch from "../components/ToggleSwitch";
 
 function Settings() {
     const [on, setOn] = useState(true)
+    const [emailNotification, setEmailNotification] = useState(false)
+    const [streakAlert, setStreakAlert] = useState(false)
+    const [dailySummary, setDailySummary] = useState(false)
+    const [darkMode, setDarkMode] = useState(false)
 
     return ( 
         <div className="mr-28">
@@ -35,8 +39,8 @@ function Settings() {
                             <p className="text-gray-500">Receive email reminders for your tasks</p>
                         </div>
                         <ToggleSwitch
-                        checked={on}
-                        onChange={setOn}
+                        checked={emailNotification}
+                        onChange={setEmailNotification}
                         size="sm"
                         colorClass="bg-primary"
                         >
@@ -48,8 +52,8 @@ function Settings() {
                             <p className="text-gray-500">Get notified when you're about to lose a streak</p>
                         </div>
                         <ToggleSwitch
-                        checked={on}
-                        onChange={setOn}
+                        checked={streakAlert}
+                        onChange={setStreakAlert}
                         size="sm"
                         colorClass="bg-primary"
                         >
@@ -61,8 +65,8 @@ function Settings() {
                             <p className="text-gray-500">Receive a daily summary of your progress</p>
                         </div>
                         <ToggleSwitch
-                        checked={on}
-                        onChange={setOn}
+                        checked={dailySummary}
+                        onChange={setDailySummary}
                         size="sm"
                         colorClass="bg-primary"
                         >
@@ -79,8 +83,8 @@ function Settings() {
                             <p className="text-gray-500">Switch to dark mode</p>
                         </div>
                         <ToggleSwitch
-                        checked={on}
-                        onChange={setOn}
+                        checked={darkMode}
+                        onChange={setDarkMode}
                         size="sm"
                         colorClass="bg-primary"
                         >
