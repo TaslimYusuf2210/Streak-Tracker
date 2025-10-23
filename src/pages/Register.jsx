@@ -33,9 +33,9 @@ function Register() {
       };
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="rounded-lg border border-gray-300 text-center p-6 bg-white max-w-md w-full space-y-5 shadow-md">
+      <div className="mx-8 rounded-lg border border-gray-300 text-center p-6 bg-white max-w-md w-full space-y-5 shadow-md">
         <h3 className="text-2xl font-bold">Welcome Back</h3>
-        <p className="text-gray-600">
+        <p className="text-gray-600 font-medium">
           Sign in to continue tracking your streaks
         </p>
         <form onSubmit={handleSubmit(onSubmit)} className="text-left space-y-4">
@@ -99,7 +99,7 @@ function Register() {
             Sign In
           </button>
         </form>
-        <p className="text-gray-600">
+        <p className="text-gray-600 font-medium">
           Don't have an account?
           <Link to="/login" className="text-primary">
             Sign In

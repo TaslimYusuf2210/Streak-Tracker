@@ -21,10 +21,10 @@ function Tasks() {
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold">My Tasks</h1>
-                    <p className="text-gray-600 text-lg font-medium">Manage your habits and track your streaks</p>
+                    <p className="text-gray-600 lg:text-lg font-medium">Manage your habits and track your streaks</p>
                 </div>
                 <button 
-                className="px-4 py-2 bg-primary rounded-lg 
+                className="lg:px-4 px-2 py-2 bg-primary rounded-lg 
                 text-white font-medium flex items-center gap-2 hover:bg-blue-400"
                 >
                 <IoIosAdd className="text-xl"/> 

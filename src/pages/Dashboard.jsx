@@ -58,11 +58,13 @@ const cards = [
 function Dashboard() {
     return ( 
         <div className="space-y-8">
-            <div className="text-left">
-                <h1 className="font-bold text-3xl">Welcome, Rufai!</h1>
-                <p className="text-lg text-gray-600 font-medium">Here's your progress overview</p>
+            <div className="text-left flex justify-between">
+                <div>
+                    <h1 className="font-bold md:text-3xl text-2xl">Welcome, Rufai!</h1>
+                    <p className="lg:text-lg text-gray-600 font-medium">Here's your progress overview</p>
+                </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card
                 title="Total Habits"
                 icon={<LuTarget />}

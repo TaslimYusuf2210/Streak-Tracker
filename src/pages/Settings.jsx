@@ -9,10 +9,10 @@ function Settings() {
     const [darkMode, setDarkMode] = useState(false)
 
     return ( 
-        <div className="mr-28">
+        <div className="lg:mr-28">
             <div>
                 <h1 className="font-bold text-3xl">Settings</h1>
-                <p className="text-lg text-gray-600 font-medium">Manage your account and preferences</p>
+                <p className="lg:text-lg text-gray-600 font-medium">Manage your account and preferences</p>
             </div>
             <div className="bg-white shadow-lg rounded-xl border mt-6 border-gray-300 p-6">
                 <header className="font-semibold text-gray-900 text-[22px]">Profile</header>
