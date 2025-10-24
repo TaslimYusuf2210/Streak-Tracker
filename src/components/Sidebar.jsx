@@ -23,9 +23,9 @@ const items = [
     },
 ]
 
-function Sidebar() {
+function Sidebar({onLinkClick}) {
     return ( 
-        <div className="min-w-56 text-center bg-white justify-between hidden md:flex flex-col w-64 h-screen fixed md:sticky top-0 shadow-md">
+        <div className="min-w-56 text-center bg-white justify-between flex flex-col w-64 h-screen fixed md:sticky top-0 shadow-md">
             <div>
                 <div className="p-4 flex items-center justify-center gap-2">
                     <div className="p-2 rounded-lg bg-primary"><FaFire  className="text-white"/></div>
@@ -45,6 +45,11 @@ function Sidebar() {
                                 ? "text-primary bg-primary/10 rounded-lg" 
                                 : "text-gray-600 hover:bg-gray-50 hover:text-blue-500"}`
                             }
+                            onClick={() => {
+                                if (window.innerWidth < 768) {
+                                    onLinkClick?.();
+                                }
+                            }}
                         >
                             <span className="text-xl">{item.icon}</span>
                             <span className="font-medium">{item.title}</span>

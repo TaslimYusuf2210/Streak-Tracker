@@ -27,7 +27,7 @@ function Tasks() {
                 className="lg:px-4 px-2 py-2 bg-primary rounded-lg 
                 text-white font-medium flex items-center gap-2 hover:bg-blue-400"
                 >
-                <IoIosAdd className="text-xl"/> 
+                <IoIosAdd className="text-xl hidden md:block"/> 
                 <span>Add Task</span> 
                 </button>
             </div>
