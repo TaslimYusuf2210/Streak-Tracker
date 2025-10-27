@@ -4,33 +4,29 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object().shape({
-    fullname: yup
-        .string()
-        .required("Fullname is required"),
-    email: yup
-        .string()
-        .email("Invalid email format")
-        .required("Please enter your email"),
-    password: yup
-        .string()
-        .required("Password is required"),
-    confirmPassword: yup
-        .string()
-        .required("Please confirm your password"),
+  fullname: yup.string().required("Fullname is required"),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Please enter your email"),
+  password: yup.string().required("Password is required"),
+  confirmPassword: yup.string().required("Please confirm your password"),
 });
+
+const BASE_URL = import.meta.env.VITE_STREAKTRACKER_API_BASE_URL;
 
 function Register() {
   const {
-      register,
-      handleSubmit,
-      formState: { errors },
-      } = useForm({
-          resolver: yupResolver(schema),
-      });
-  
-      const onSubmit = async (data) => {
-      console.log("Form data:", data);
-      };
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data) => {
+    console.log("Form data:", data);
+  };
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="mx-8 rounded-lg border border-gray-300 text-center p-6 bg-white max-w-md w-full space-y-5 shadow-md">
@@ -95,7 +91,10 @@ function Register() {
               </p>
             )}
           </div>
-          <button type="submit" className="bg-primary text-white rounded-md w-full font-medium py-2">
+          <button
+            type="submit"
+            className="bg-primary text-white rounded-md w-full font-medium py-2"
+          >
             Sign In
           </button>
         </form>

@@ -24,6 +24,13 @@ function DashboardLayout() {
                 >
                 </Sidebar>
             </div>
+            {/* Backdrop overlay (only visible on mobile when sidebar is open) */}
+            {isOpen && (
+                <div
+                className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                onClick={() => setIsOpen(false)}
+                ></div>
+            )}
             <main className={`flex-1 px-4 py-16 md:px-5 md:py-6 min-h-screen`}>
                     <Outlet />
                 <button className="absolute top-4 right-4 z-50 md:hidden"
