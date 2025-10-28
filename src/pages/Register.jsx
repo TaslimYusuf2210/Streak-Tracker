@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { registerUser } from "../api";
 
 const schema = yup.object().shape({
   fullname: yup.string().required("Fullname is required"),
@@ -10,12 +12,15 @@ const schema = yup.object().shape({
     .email("Invalid email format")
     .required("Please enter your email"),
   password: yup.string().required("Password is required"),
-  confirmPassword: yup.string().required("Please confirm your password"),
+  confirmPassword: yup.string().oneOf([yup.ref("password")], "Passwords must match").required("Please confirm your password"),
 });
 
-const BASE_URL = import.meta.env.VITE_STREAKTRACKER_API_BASE_URL;
-
 function Register() {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageStatus, setMessageStatus] = useState()
+  // const [form, setForm] = useState({fullName:"", email:"", password:"", confirmPassword:""})
+
   const {
     register,
     handleSubmit,
@@ -24,8 +29,27 @@ function Register() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
-    console.log("Form data:", data);
+  const getInputData = (e) => {
+    console.log(e.target.value)
+    // setForm({...form,[e.target.name]: e.target.value})
+    // console.log(form);
+  }
+
+  const onSubmit = async (formData) => {
+    console.log(formData)
+    setLoading(true)
+
+    try {
+      const apiResult = registerUser(formData);
+      setMessage("Registration successful!")
+      setMessageStatus(true)
+      console.log("Server response:", apiResult) 
+    } catch (error) {
+      setMessage("Registration failed. Try again")
+      setMessageStatus(false)
+    } finally {
+      setLoading(false)
+    }
   };
   return (
     <div className="flex justify-center items-center h-screen">
@@ -42,6 +66,7 @@ function Register() {
               className="border h-10 border-gray-300 rounded-md p-4"
               type="text"
               placeholder="John Doe"
+              name="fullname"
             />
             {errors.fullname && (
               <p className="text-sm text-red-500 font-light">
@@ -56,6 +81,7 @@ function Register() {
               className="border h-10 border-gray-300 rounded-md p-4"
               type="email"
               placeholder="you@example.com"
+              name="email"
             />
             {errors.email && (
               <p className="text-sm text-red-500 font-light">
@@ -70,6 +96,7 @@ function Register() {
               className="border h-10 border-gray-300 rounded-md p-4 hover:border-primary   active:outline-none"
               type="password"
               placeholder="Enter your password"
+              name="password"
             />
             {errors.password && (
               <p className="text-sm text-red-500 font-light">
@@ -84,6 +111,7 @@ function Register() {
               className="border h-10 border-gray-300 rounded-md p-4 hover:border-primary   active:outline-none"
               type="password"
               placeholder="Confirm your password"
+              name="confirmPassword"
             />
             {errors.confirmPassword && (
               <p className="text-sm text-red-500 font-light">
@@ -92,11 +120,15 @@ function Register() {
             )}
           </div>
           <button
+            disabled={loading}
             type="submit"
             className="bg-primary text-white rounded-md w-full font-medium py-2"
           >
-            Sign In
+            {loading ? "Loading..." : "Sign Up"}
           </button>
+          <div className="text-center">
+            <p className={`text-sm ${messageStatus ? "text-green-400" : "text-red-400"}`}>{message}</p>
+          </div>
         </form>
         <p className="text-gray-600 font-medium">
           Don't have an account?
