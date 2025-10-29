@@ -21,3 +21,24 @@ export async function registerUser(userData) {
         throw error;
     }
 }
+
+export async function getHabits() {
+  try {
+    const response = await fetch(`${BASE_URL}/habits`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch habits")
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching habits:", error)
+    throw error;
+  }
+}

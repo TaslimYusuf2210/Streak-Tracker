@@ -1,7 +1,8 @@
 import { IoIosAdd } from "react-icons/io";
 import TaskTabs from "../components/TaskTabs";
 import TaskList from "../components/TaskList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getHabits } from "../api";
 
 const testTasks = [
   { id: 1, task: "Morning Exercise", type: "Daily", currentStreak: 7, bestStreak: 14 },
@@ -14,6 +15,20 @@ const testTasks = [
 
 function Tasks() {
     const [filter, setFilter] = useState("All")
+    const [habits, setHabits] = useState([])
+
+    useEffect(() => {
+        const fetchHabits = async () => {
+            try {
+                const data = await getHabits()
+                console.log(data)
+            } catch (error) {
+                console.error("Failed to load habits:", error);
+            }
+        }
+
+        fetchHabits()
+    }, [])
 
     const filteredTasks = filter === "All" ? testTasks : testTasks.filter((t) => t.type === filter)
     return ( 
