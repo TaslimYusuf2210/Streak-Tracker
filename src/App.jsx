@@ -8,6 +8,8 @@ import Settings from './pages/Settings'
 import Tasks from './pages/MyTasks'
 import DashboardLayout from './layout/DashboardLayout'
 import './App.css'
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+    <ToastContainer position='top-center' autoClose={3000}/>
     </div>
   )
 }
