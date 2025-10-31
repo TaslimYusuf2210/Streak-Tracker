@@ -18,6 +18,24 @@ export async function registerUser(userData) {
     return data
 }
 
+export async function loginUser (userData) {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(userData), 
+    });
+
+    const data = await response.json()
+    console.log(data)
+    if (!response.ok) {
+    throw data; 
+    }
+    return data
+}
+
 export async function getHabits() {
   try {
     const response = await fetch(`${BASE_URL}/habits`,{

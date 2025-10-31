@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   email: yup
@@ -13,20 +15,36 @@ const schema = yup.object().shape({
 });
 
 function Login() {
-    const {
+  const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-    } = useForm({
-        resolver: yupResolver(schema),
-    });
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
-    const onSubmit = async (data) => {
-    console.log("Form data:", data);
-    navigate("/dashboard")
-    };
+  const onSubmit = async (data) => {
+
+    try {
+      const response = await loginUser(data)
+  
+      if (response?.status === "success") {
+        toast.success("Login successful")
+        console.log(response.data.token)
+        localStorage.setItem("token", response.data.token)
+        reset()
+        navigate("/dashboard");
+      } else {
+        toast.error(response?.message || "Login failed")
+      }
+    } catch (error) {
+      toast.error("Invalid email or password")
+      console.error("Login error:", error)
+    }
+  };
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="mx-8 rounded-lg border border-gray-300 text-center p-6 bg-white max-w-md w-full space-y-5 shadow-md">
@@ -41,7 +59,7 @@ function Login() {
               {...register("email")}
               className="border h-10 border-gray-300 rounded-md p-4"
               type="email"
-              placeholder="you@example.com" 
+              placeholder="you@example.com"
             />
             {errors.email && (
               <p className="text-sm text-red-500 font-light">
@@ -63,12 +81,15 @@ function Login() {
               </p>
             )}
           </div>
-          <button type="submit" className="bg-primary text-white rounded-md w-full font-medium py-2">
+          <button
+            type="submit"
+            className="bg-primary text-white rounded-md w-full font-medium py-2"
+          >
             Sign In
           </button>
         </form>
         <p className="text-gray-600 font-medium">
-          Don't have an account? 
+          Don't have an account?
           <Link to="/register" className="text-primary">
             Sign up
           </Link>
