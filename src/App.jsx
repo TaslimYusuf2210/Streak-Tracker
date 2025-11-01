@@ -10,6 +10,7 @@ import DashboardLayout from './layout/DashboardLayout'
 import './App.css'
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import ProtectedRoute from './layout/ProtectedRoute'
 
 function App() {
   return (
@@ -22,7 +23,12 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Protected routes with sidebar */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/dashboard" 
+        element={
+        <ProtectedRoute>
+          <DashboardLayout />
+        </ProtectedRoute>
+        }>
           <Route index element={<Dashboard />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="settings" element={<Settings />} />

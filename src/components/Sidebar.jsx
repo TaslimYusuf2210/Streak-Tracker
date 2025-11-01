@@ -4,6 +4,7 @@ import { FaTasks } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 import { MdLogout } from "react-icons/md";
 import { FaFire } from "react-icons/fa";
+import { Navigate } from "react-router-dom";
 
 const items = [
     {
@@ -24,6 +25,11 @@ const items = [
 ]
 
 function Sidebar({onLinkClick}) {
+    function logOut() {
+        localStorage.removeItem("token")
+        Navigate("/login")
+    }
+
     return ( 
         <div className="min-w-56 text-center bg-white justify-between flex flex-col w-64 h-screen fixed md:sticky top-0 shadow-md">
             <div>
@@ -63,6 +69,7 @@ function Sidebar({onLinkClick}) {
                 <hr className="w-full"/>
                 <div className="p-4">
                     <NavLink 
+                    onClick={logOut}
                     className="p-4 flex justify-start gap-2 
                     items-center transition-colors text-red-500 
                     duration-200 px-3 py-2 rounded-lg hover:bg-red-50">
