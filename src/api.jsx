@@ -36,6 +36,28 @@ export async function loginUser (userData) {
     return data
 }
 
+export async function getUserProfile(token) {
+  try {
+    const response = await fetch(`${BASE_URL}/user`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    })
+    if (!response.ok) {
+      throw new Error("Failed to fetch habits")
+    }
+
+    const data = await response.json();
+    console.log(data)
+    return data;
+  } catch (error) {
+    
+  }
+}
+
 export async function getHabits() {
   try {
     const response = await fetch(`${BASE_URL}/habits`,{

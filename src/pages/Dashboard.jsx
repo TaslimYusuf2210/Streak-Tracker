@@ -4,6 +4,8 @@ import { GiTrophyCup } from "react-icons/gi";
 import { LuTarget } from "react-icons/lu";
 import Card from "../components/card";
 import Task from "../components/Task";
+import {useState, useEffect} from "react"
+import { getUserProfile } from "../api";
 
 const tasks = [
     {
@@ -56,11 +58,23 @@ const cards = [
 ]
 
 function Dashboard() {
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+
+        if (token) {
+            console.log("Token dey")
+            getUserProfile(token)
+            .then((data) => {console.log(data); setUser(data)})
+            .catch((err) => console.error("Failed to load user:", err));
+        }
+    }, [])
     return ( 
         <div className="space-y-8">
             <div className="text-left flex justify-between">
                 <div>
-                    <h1 className="font-bold md:text-3xl text-2xl">Welcome, Rufai!</h1>
+                    <h1 className="font-bold md:text-3xl text-2xl">Welcome, {user? user.name : "Guest"}!</h1>
                     <p className="lg:text-lg text-gray-600 font-medium">Here's your progress overview</p>
                 </div>
             </div>
