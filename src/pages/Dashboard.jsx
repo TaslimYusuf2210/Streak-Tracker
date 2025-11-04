@@ -5,7 +5,7 @@ import { LuTarget } from "react-icons/lu";
 import Card from "../components/card";
 import Task from "../components/Task";
 import {useState, useEffect} from "react"
-import { getUserProfile } from "../api";
+import { getUserProfile, getAnalytics } from "../api";
 
 const tasks = [
     {
@@ -59,6 +59,7 @@ const cards = [
 
 function Dashboard() {
     const [user, setUser] = useState(null)
+    const [analyticsData, setAnalyticsData] = useState(null)
 
     useEffect(() => {
         const token = localStorage.getItem("token")
@@ -68,6 +69,13 @@ function Dashboard() {
             getUserProfile(token)
             .then((data) => {console.log(data); setUser(data)})
             .catch((err) => console.error("Failed to load user:", err));
+            getAnalytics(token)
+            .then((data) => {console.log(data); setAnalyticsData(data)})
+            .catch((err) => console.error("Failed to get analytics data:", err));
+        }
+
+        if (condition) {
+            
         }
     }, [])
     return ( 

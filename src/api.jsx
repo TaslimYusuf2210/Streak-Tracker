@@ -58,6 +58,28 @@ export async function getUserProfile(token) {
   }
 }
 
+export async function getAnalytics(token) {
+  try {
+    const response = await fetch(`${BASE_URL}/habits/analytics`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    })
+    if (!response.ok) {
+      throw new Error("Failed to fetch habits")
+    }
+
+    const data = await response.json();
+    console.log(data)
+    return data;
+  } catch (error) {
+    console.log("Error", error)
+  }
+}
+
 export async function getHabits() {
   try {
     const response = await fetch(`${BASE_URL}/habits`,{
