@@ -74,9 +74,7 @@ function Dashboard() {
             .catch((err) => console.error("Failed to get analytics data:", err));
         }
 
-        if (analyticsData) {
-            
-        }
+        
     }, [])
     return ( 
         <div className="space-y-8">

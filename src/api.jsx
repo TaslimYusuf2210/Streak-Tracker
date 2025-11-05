@@ -80,11 +80,12 @@ export async function getAnalytics(token) {
   }
 }
 
-export async function getHabits() {
+export async function getAllHabits(token) {
   try {
     const response = await fetch(`${BASE_URL}/habits`,{
       method: "GET",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
         "Accept": "application/json",
       },

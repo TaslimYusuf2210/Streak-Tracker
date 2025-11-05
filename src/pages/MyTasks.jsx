@@ -2,7 +2,7 @@ import { IoIosAdd } from "react-icons/io";
 import TaskTabs from "../components/TaskTabs";
 import TaskList from "../components/TaskList";
 import { useState, useEffect } from "react";
-import { getHabits } from "../api";
+import { getAllHabits } from "../api";
 
 const testTasks = [
   { id: 1, task: "Morning Exercise", type: "Daily", currentStreak: 7, bestStreak: 14 },
@@ -15,19 +15,17 @@ const testTasks = [
 
 function Tasks() {
     const [filter, setFilter] = useState("All")
-    const [habits, setHabits] = useState([])
+    const [habits, setHabits] = useState({})
 
     useEffect(() => {
-        const fetchHabits = async () => {
-            try {
-                const data = await getHabits()
-                console.log(data)
-            } catch (error) {
-                console.error("Failed to load habits:", error);
-            }
-        }
+        const token = localStorage.getItem("token")
 
-        fetchHabits()
+        if (token) {
+            console.log("Token dey")
+            getAllHabits(token)
+            .then((data) => {console.log(data); setHabits(data)})
+            .catch((err) => console.error("Failed to get data:", err))
+        }
     }, [])
 
     const filteredTasks = filter === "All" ? testTasks : testTasks.filter((t) => t.type === filter)
@@ -48,16 +46,19 @@ function Tasks() {
             </div>
             <div>
                 <TaskTabs currentTab={setFilter}></TaskTabs>
-                {testTasks.map((item) => (
-                    <TaskList
-                    key={item.id}
-                    task={item.task}
-                    type={item.type}
-                    currentStreak={item.currentStreak}
-                    bestStreak={item.bestStreak}
-                    >
-                    </TaskList>
-                ))
+                {habits.length < 1 ?
+                    habits.data.map((item) => (
+                        <TaskList
+                        key={item.id}
+                        task={item.task}
+                        type={item.type}
+                        currentStreak={item.currentStreak}
+                        bestStreak={item.bestStreak}
+                        >
+                        </TaskList>
+                    )):
+                    "No available habits"
+                    
                 }
             </div>
         </div>
