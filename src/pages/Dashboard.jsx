@@ -74,7 +74,7 @@ function Dashboard() {
             .catch((err) => console.error("Failed to get analytics data:", err));
         }
 
-        if (condition) {
+        if (analyticsData) {
             
         }
     }, [])
@@ -90,7 +90,7 @@ function Dashboard() {
                 <Card
                 title="Total Habits"
                 icon={<LuTarget />}
-                value="8"
+                value={analyticsData? analyticsData.data.total_habits : "Loading"}
                 footer="Active habits tracked"
                 iconColor="text-gray-500"
                 mainTextColor="text-black"
@@ -99,7 +99,7 @@ function Dashboard() {
                 <Card
                 title="Completed Today"
                 icon= {<CiCircleCheck />}
-                value="5/8"
+                value={analyticsData? analyticsData.data.completed_habits : "Loading"}
                 footer="63% completion rate"
                 iconColor="text-gray-500"
                 mainTextColor="text-primary"
@@ -108,7 +108,7 @@ function Dashboard() {
                 <Card
                 title="Current Streaks"
                 icon= {<AiOutlineFire />}
-                value="3"
+                value={analyticsData? analyticsData.data.longest_streak_days : "Loading"}
                 footer="Active streaks running"
                 iconColor="text-orange-500"
                 mainTextColor="text-orange-500"
@@ -117,7 +117,7 @@ function Dashboard() {
                 <Card
                 title="Longest Streak"
                 icon= {<GiTrophyCup />}
-                value="21"
+                value={analyticsData? analyticsData.data.total_habits : "Loading"}
                 footer="Days in a row"
                 iconColor="text-gray-500"
                 mainTextColor="text-orange-500"
