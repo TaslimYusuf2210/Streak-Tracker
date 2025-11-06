@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-function TaskTabs({currentTab}) {
+function TaskTabs({currentTab, tabs}) {
     const [activeTab, setActiveTab] = useState("All")
 
-    const tabs = ["All", "Daily", "Weekly", "Custom"];
+    // const tabs = ["All", "Daily", "Weekly", "Custom"];
 
     function handleClick(tab) {
         setActiveTab(tab)
