@@ -1,5 +1,43 @@
 import SelectDaysTab from "./SelectDaysTab";
 
+const days = [
+    {
+        id: 1,
+        name: "Sun",
+        value: "Sunday"
+    },
+    {
+        id: 2,
+        name: "Mon",
+        value: "Monday"
+    },
+    {
+        id: 3,
+        name: "Tue",
+        value: "Tuesday"
+    },
+    {
+        id: 4,
+        name: "Wed",
+        value: "Wednesday"
+    },
+    {
+        id: 5,
+        name: "Thu",
+        value: "Thursday"
+    },
+    {
+        id: 6,
+        name: "Fri",
+        value: "Friday"
+    },
+    {
+        id: 7,
+        name: "Sat",
+        value: "Saturday"
+    },
+]
+
 function CreateTask() {
   return (
     <div className="p-6">
@@ -38,7 +76,9 @@ function CreateTask() {
 
           <div className="flex flex-col gap-1">
             <label className="font-semibold">Select Days</label>
-            <SelectDaysTab></SelectDaysTab>
+            <SelectDaysTab
+            days={days}
+            ></SelectDaysTab>
             
           </div>
       </form>
