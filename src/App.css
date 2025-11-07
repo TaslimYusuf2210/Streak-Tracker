@@ -7,3 +7,19 @@
   margin: 0 auto;
 }
 
+.select-clean {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  appearance: none; /* removes default dropdown styles */
+  background: transparent;
+}
+
+.select-clean:focus,
+.select-clean:active,
+.select-clean:hover {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
