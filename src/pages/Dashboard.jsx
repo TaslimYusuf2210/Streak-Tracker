@@ -2,7 +2,7 @@ import { AiOutlineFire } from "react-icons/ai";
 import { CiCircleCheck } from "react-icons/ci";
 import { GiTrophyCup } from "react-icons/gi";
 import { LuTarget } from "react-icons/lu";
-import Card from "../components/card";
+import Card from "../components/Card";
 import Task from "../components/Task";
 import {useState, useEffect} from "react"
 import { getUserProfile, getAnalytics } from "../api";
