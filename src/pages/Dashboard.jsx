@@ -67,20 +67,19 @@ function Dashboard() {
         if (token) {
             console.log("Token dey")
             getUserProfile(token)
-            .then((data) => {console.log(data); setUser(data)})
+            .then((data) => {setUser(data)})
             .catch((err) => console.error("Failed to load user:", err));
             getAnalytics(token)
             .then((data) => {console.log(data); setAnalyticsData(data)})
             .catch((err) => console.error("Failed to get analytics data:", err));
         }
-
-        
     }, [])
+
     return ( 
         <div className="space-y-8">
             <div className="text-left flex justify-between">
                 <div>
-                    <h1 className="font-bold md:text-3xl text-2xl">Welcome, {user? user.name : "Guest"}!</h1>
+                    <h1 className="font-bold md:text-3xl text-2xl">Welcome, {user?.data.name || "guest"}!</h1>
                     <p className="lg:text-lg text-gray-600 font-medium">Here's your progress overview</p>
                 </div>
             </div>
@@ -88,7 +87,7 @@ function Dashboard() {
                 <Card
                 title="Total Habits"
                 icon={<LuTarget />}
-                value={analyticsData? analyticsData.data.total_habits : "Loading"}
+                value={analyticsData? analyticsData.data.total_tasks : "Loading"}
                 footer="Active habits tracked"
                 iconColor="text-gray-500"
                 mainTextColor="text-black"
@@ -97,7 +96,7 @@ function Dashboard() {
                 <Card
                 title="Completed Today"
                 icon= {<CiCircleCheck />}
-                value={analyticsData? analyticsData.data.completed_habits : "Loading"}
+                value={analyticsData? analyticsData.data.completed_today : "Loading"}
                 footer="63% completion rate"
                 iconColor="text-gray-500"
                 mainTextColor="text-primary"
@@ -106,7 +105,7 @@ function Dashboard() {
                 <Card
                 title="Current Streaks"
                 icon= {<AiOutlineFire />}
-                value={analyticsData? analyticsData.data.longest_streak_days : "Loading"}
+                value={analyticsData? analyticsData.data.longest_streak : "Loading"}
                 footer="Active streaks running"
                 iconColor="text-orange-500"
                 mainTextColor="text-orange-500"
@@ -115,10 +114,10 @@ function Dashboard() {
                 <Card
                 title="Longest Streak"
                 icon= {<GiTrophyCup />}
-                value={analyticsData? analyticsData.data.total_habits : "Loading"}
+                value={analyticsData? analyticsData.data.total_tasks : "Loading"}
                 footer="Days in a row"
                 iconColor="text-gray-500"
-                mainTextColor="text-orange-500"
+                mainTextColor="text-orange-600"
                 >
                 </Card>
                 {/* {cards.map((card, index) => (

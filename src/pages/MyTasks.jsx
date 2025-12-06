@@ -3,7 +3,6 @@ import TaskTabs from "../components/TaskTabs";
 import TaskList from "../components/TaskList";
 import { useState, useEffect } from "react";
 import { getAllHabits } from "../api";
-// import Modal from "../components/Modal";
 import Modal from "../components/Modal"
 import CreateTask from "../components/CreateTask";
 

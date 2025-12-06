@@ -51,7 +51,7 @@ export async function getUserProfile(token) {
     }
 
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     return data;
   } catch (error) {
     
@@ -60,7 +60,7 @@ export async function getUserProfile(token) {
 
 export async function getAnalytics(token) {
   try {
-    const response = await fetch(`${BASE_URL}/habits/analytics`, {
+    const response = await fetch(`${BASE_URL}/analytics/tasks`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
