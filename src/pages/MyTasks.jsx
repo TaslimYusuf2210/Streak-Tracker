@@ -70,7 +70,7 @@ function Tasks() {
                 tabs= {habitTabs}
                 >
                 </TaskTabs>
-                {habits.length < 1 ?
+                {habits.length > 0 ?
                     habits.data.map((item) => (
                         <TaskList
                         key={item.id}

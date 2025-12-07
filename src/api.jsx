@@ -102,3 +102,22 @@ export async function getAllHabits(token) {
     throw error;
   }
 }
+
+export async function createHabit (token, formData) {
+    const response = await fetch(`${BASE_URL}/tasks`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(formData), 
+    });
+
+    const data = await response.json()
+    console.log(data)
+    if (!response.ok) {
+    throw data; 
+    }
+    return data
+}

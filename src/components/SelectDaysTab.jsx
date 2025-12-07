@@ -1,5 +1,5 @@
 function SelectDaysTab({day, toggleDays, selectedDays}) {
-    const isActive = selectedDays.find((d) => d.id === day.id);
+    const isActive = selectedDays.find((d) => d === day.value);
     
     return ( 
         <div>

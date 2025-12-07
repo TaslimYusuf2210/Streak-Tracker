@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { createHabit } from "../api";
 
 const days = [
   {
@@ -43,7 +44,7 @@ const days = [
 ];
 
 const schema = yup.object().shape({
-  taskName: yup
+  title: yup
     .string()
     .required("Please enter habit name"),
   frequency: yup.string().required("Frequency is required"),
@@ -51,6 +52,7 @@ const schema = yup.object().shape({
 
 function CreateTask() {
     const [selectedDays, setSelectedDays] = useState([])
+    const [customError, setCustomError] = useState(false)
     const {
         register,
         handleSubmit,
@@ -63,8 +65,28 @@ function CreateTask() {
 
       const frequency = watch("frequency")
 
-      const create = async () => {
-        console.log("Working")
+      const create = async (data) => {
+        const token = localStorage.getItem("token")
+        console.log(token);
+        
+        // console.log(data);
+        // If user doesn't select days, display error message
+        if (data.frequency === "custom" && selectedDays.length < 1) {
+          setCustomError(true)
+          return;
+        }
+        console.log(data);
+
+        setCustomError(false)
+
+        const payload = {...data, ...(data.frequency === "custom" && {custom: selectedDays})}
+        console.log(payload)
+
+        createHabit(token, payload)
+        .then(res => console.log("Task created", res))
+        .catch(err => console.log("Error:", err));
+        
+
       }
 
       const cancel = async () => {
@@ -74,20 +96,20 @@ function CreateTask() {
 
 
   function toggleDays(day) {
-    console.log(day);
+    const dayValue = day.value
     setSelectedDays((prev) => {
       // check if the clicked day exists in the selectedDays
       console.log(prev);
-      if (prev.find((e) => e.id === day.id)) {
+      if (prev.find((d) => d === dayValue)) {
         console.log("Similarities");
         //Remove the selectedDay from selectedDays
-        const removeDay = prev.filter((d) => d.id !== day.id);
+        const removeDay = prev.filter((d) => d !== dayValue);
         console.log(removeDay);
         return removeDay;
       } else {
         //Add selected day
         console.log(prev, selectedDays);
-        return [...prev, day];
+        return [...prev, dayValue];
       }
     });
   }
@@ -102,13 +124,13 @@ function CreateTask() {
         <div className="flex flex-col gap-1">
           <label className="font-semibold">Task Name</label>
           <input
-              {...register("taskName")}
+              {...register("title")}
             className="border shadow-md h-10 border-gray-300 rounded-md p-4 placeholder:text-gray-900"
             placeholder="e.g Morning Exercise"
           />
-          {errors.taskName && (
+          {errors.title && (
                 <p className="text-sm text-red-500 font-light">
-                    {errors.taskName.message}
+                    {errors.title.message}
                 </p>
                 )}
         </div>
@@ -119,10 +141,10 @@ function CreateTask() {
             {...register("frequency")} 
             className="w-full select-clean"
             >
-                <option value="" selected></option>
+                <option value="" defaultValue></option>
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
-                <option value="custom days">Custom Days</option>
+                <option value="custom">Custom Days</option>
             </select>
           </div>
           {errors.frequency && (
@@ -132,7 +154,7 @@ function CreateTask() {
             )}
         </div>
 
-        {frequency === "custom days" && (
+        {frequency === "custom" && (
 
         <div className="flex flex-col gap-1">
           <p className="font-semibold">Select Days</p>
@@ -147,6 +169,11 @@ function CreateTask() {
             ))
             }
           </div>
+          {customError === true && (
+            <span className="text-red-500">
+              Please choose a day
+            </span>
+          )}
         </div>
         )
         }
