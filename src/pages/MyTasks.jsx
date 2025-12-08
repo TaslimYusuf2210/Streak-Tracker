@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { getAllHabits } from "../api";
 import Modal from "../components/Modal"
 import CreateTask from "../components/CreateTask";
+import { deleteHabit } from "../api";
+import NoAvailableHabits from "../components/NoAvailableHabits";
 
 const testTasks = [
   { id: 1, task: "Morning Exercise", type: "Daily", currentStreak: 7, bestStreak: 14 },
@@ -19,10 +21,10 @@ const habitTabs = ["All", "Daily", "Weekly", "Custom"];
 
 function Tasks() {
     const [filter, setFilter] = useState("All")
-    const [habits, setHabits] = useState({})
-    const [dailyHabits, setDailyHabits] = useState({})
-    const [weeklyHabits, setWeeklyHabits] = useState({})
-    const [customHabits, setCustomHabits] = useState({})
+    const [habits, setHabits] = useState([])
+    const [dailyHabits, setDailyHabits] = useState()
+    const [weeklyHabits, setWeeklyHabits] = useState()
+    const [customHabits, setCustomHabits] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
@@ -33,20 +35,90 @@ function Tasks() {
             getAllHabits(token)
             .then((data) => {console.log(data); setHabits(data)})
             .catch((err) => console.error("Failed to get data:", err))
-        }
 
-        // if (habits) {
-        //     const daily = habits.filter(hab => hab === "daily")
-        //     const weekly = habits.filter(hab => hab === "weekly")
-        //     const custom = habits.filter(hab => hab === "custom")
-        //     setDailyHabits(daily)
-        //     setWeeklyHabits(weekly)
-        //     setCustomHabits(custom)
-        // }
+            console.log(habits)
+        }
     }, [])
 
-    // const filteredTasks = filter === "All" ? testTasks : testTasks.filter((t) => t.type === filter)
+    useEffect(()=> {
+        console.log(habits)
+        const daily = habits.filter(hab => hab.frequency == "daily")
+        const weekly = habits.filter(hab => hab.frequency == "weekly")
+        const custom = habits.filter(hab => hab.frequency == "custom")
+        console.log(daily, weekly, custom)
+        setDailyHabits(daily)
+        setWeeklyHabits(weekly)
+        setCustomHabits(custom)
+    }, [habits])
 
+    function renderHabits() {
+        if (habits.length > 0) {
+            if (filter === "All") {
+                return habits.map((item) => (
+                            <TaskList
+                            key={item.id}
+                            habit={item}
+                            task={item.title}
+                            type={item.frequency}
+                            currentStreak={item.currentStreak}
+                            bestStreak={item.bestStreak}
+                            handleDelete={handleDelete}
+                            >
+                            </TaskList>
+                ));
+            } else if (filter === "Daily") {
+                return dailyHabits
+                    .map((item) => (
+                            <TaskList
+                            key={item.id}
+                            habit={item}
+                            task={item.title}
+                            type={item.frequency}
+                            currentStreak={item.currentStreak}
+                            bestStreak={item.bestStreak}
+                            handleDelete={handleDelete}
+                            >
+                            </TaskList>
+                    ))
+            } else if (filter === "Weekly") {
+                return weeklyHabits
+                    .map((item) => (
+                            <TaskList
+                            key={item.id}
+                            habit={item}
+                            task={item.title}
+                            type={item.frequency}
+                            currentStreak={item.currentStreak}
+                            bestStreak={item.bestStreak}
+                            handleDelete={handleDelete}
+                            >
+                            </TaskList>
+                    ))
+            } else if (filter === "Custom") {
+                return customHabits
+                    .map((item) => (
+                            <TaskList
+                            key={item.id}
+                            habit={item}
+                            task={item.title}
+                            type={item.frequency}
+                            currentStreak={item.currentStreak}
+                            bestStreak={item.bestStreak}
+                            handleDelete={handleDelete}
+                            >
+                            </TaskList>
+                    ))
+            } 
+        } 
+    }
+
+    async function handleDelete(id) {
+        const token = localStorage.getItem("token")
+        deleteHabit(id, token).then(() => {
+            console.log("habit deleted successfully")
+            setHabits(prev => prev.filter(task => task.id !== id))
+        }).catch(err => console.error(err))
+    }
 
     return ( 
         <div>
@@ -70,14 +142,17 @@ function Tasks() {
                 tabs= {habitTabs}
                 >
                 </TaskTabs>
-                {habits.length > 0 ?
-                    habits.data.map((item) => (
+                {renderHabits() }
+                {/* {filter == "All" && habits.length > 0 ?
+                    habits.map((item) => (
                         <TaskList
                         key={item.id}
-                        task={item.task}
-                        type={item.type}
+                        habit={item}
+                        task={item.title}
+                        type={item.frequency}
                         currentStreak={item.currentStreak}
                         bestStreak={item.bestStreak}
+                        handleDelete={handleDelete}
                         >
                         </TaskList>
                     )):
@@ -86,7 +161,7 @@ function Tasks() {
                         "No available habits"
                         </p>
                     </div>
-                }
+                } */}
             </div>
             <Modal
             isOpen={isModalOpen}

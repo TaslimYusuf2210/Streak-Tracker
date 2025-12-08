@@ -4,8 +4,9 @@ import { LuPencil } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { RiFireLine } from "react-icons/ri";
 
-function TaskList({task, type, currentStreak, bestStreak}) {
+function TaskList({task, type, currentStreak, bestStreak, handleDelete, habit}) {
   const [checked, setChecked] = useState(false);
+  const token = localStorage.getItem("token")
   function handleToggle() {
     setChecked((prev) => {
       const next = !prev;
@@ -33,7 +34,10 @@ function TaskList({task, type, currentStreak, bestStreak}) {
         </div>
         <div className="flex items-center gap-8">
           <LuPencil className="text-lg cursor-pointer" />
-          <MdDelete className="text-xl text-red-500 cursor-pointer" />
+          <MdDelete
+          onClick={() => handleDelete(habit.id)}
+          className="text-xl text-red-500 cursor-pointer" 
+          />
         </div>
       </div>
       <div className="flex justify-start items-center gap-2 w-full px-10">

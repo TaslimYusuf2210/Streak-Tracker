@@ -82,7 +82,7 @@ export async function getAnalytics(token) {
 
 export async function getAllHabits(token) {
   try {
-    const response = await fetch(`${BASE_URL}/habits`,{
+    const response = await fetch(`${BASE_URL}/tasks`,{
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -104,6 +104,7 @@ export async function getAllHabits(token) {
 }
 
 export async function createHabit (token, formData) {
+  try {
     const response = await fetch(`${BASE_URL}/tasks`, {
       method: "POST",
       headers: {
@@ -120,4 +121,29 @@ export async function createHabit (token, formData) {
     throw data; 
     }
     return data
+  } catch (error) {
+    console.error(err)
+  }
+}
+
+export async function deleteHabit (token, id) {
+  try {
+    const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json()
+    if (!response.ok) {
+    throw data; 
+    }
+
+    console.log("Deleted:", data)
+    
+  } catch (error) {
+    console.error(error);
+  }
 }

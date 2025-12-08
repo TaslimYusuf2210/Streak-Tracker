@@ -86,6 +86,7 @@ function CreateTask() {
         .then(res => console.log("Task created", res))
         .catch(err => console.log("Error:", err));
         
+        cancel()
 
       }
 
