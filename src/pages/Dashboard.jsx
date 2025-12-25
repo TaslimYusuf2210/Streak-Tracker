@@ -5,7 +5,7 @@ import { LuTarget } from "react-icons/lu";
 import Card from "../components/Card";
 import Task from "../components/Task";
 import {useState, useEffect} from "react"
-import { getUserProfile, getAnalytics } from "../api";
+import { getUserProfile, getAnalytics, getAllHabits } from "../api";
 
 const tasks = [
     {
@@ -58,21 +58,33 @@ const cards = [
 ]
 
 function Dashboard() {
+    const [habits, setHabits] = useState(null)
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null)
     const [analyticsData, setAnalyticsData] = useState(null)
+
+    // async function fetchHabits() {
+    //     try {
+    //         const data = await getTasks(); // → returns array like above
+    //         setHabits(data);
+    //     } catch (error) {
+    //         console.error(error);
+    //         alert("Failed to load today's habits");
+    //     } finally {
+    //         setLoading(false)
+    //     }
+    // }
 
     useEffect(() => {
         const token = localStorage.getItem("token")
 
-        if (token) {
-            console.log("Token dey")
-            getUserProfile(token)
-            .then((data) => {setUser(data)})
-            .catch((err) => console.error("Failed to load user:", err));
-            getAnalytics(token)
-            .then((data) => {console.log(data); setAnalyticsData(data)})
-            .catch((err) => console.error("Failed to get analytics data:", err));
-        }
+        // fetchHabits()
+        getUserProfile(token)
+        .then((data) => {setUser(data)})
+        .catch((err) => console.error("Failed to load user:", err));
+        getAnalytics(token)
+        .then((data) => {console.log(data); setAnalyticsData(data)})
+        .catch((err) => console.error("Failed to get analytics data:", err));
     }, [])
 
     return ( 
@@ -138,14 +150,21 @@ function Dashboard() {
                     <button className="px-4 py-2 bg-primary rounded-lg text-white font-medium hover:bg-blue-400">View All Tasks</button>
                 </div>
                 <div className="mt-8 space-y-4">
-                    {tasks.map((item, index) => (
+                    {loading ? <p>Loading...</p> : 
+
+                    habits.map((habit, index) => (
                         <Task
                         key={index}
-                        task={item.tasks}
-                        days={item.days}
+                        task={habit.title}
+                        days={habit.current_streak}
+                        habitId={habit.id}
+                        completedToday={habit.completed_today}
+                        onTrackSuccess={fetchTasks}
                         >
                         </Task>
                     ))
+                    
+                    
                     }
                 </div>
             </div>

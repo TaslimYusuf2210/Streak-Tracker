@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createHabit } from "../api";
+import { getAllHabits } from "../api";
 
 const days = [
   {
@@ -86,6 +87,7 @@ function CreateTask() {
         .then(res => console.log("Task created", res))
         .catch(err => console.log("Error:", err));
         
+        getAllHabits(token)
         cancel()
 
       }

@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_STREAKTRACKER_API_BASE_URL;
+const token = localStorage.getItem("token")
 
 export async function registerUser(userData) {
     const response = await fetch(`${BASE_URL}/auth/register`, {
@@ -126,24 +127,93 @@ export async function createHabit (token, formData) {
   }
 }
 
-export async function deleteHabit (token, id) {
-  try {
-    const response = await fetch(`${BASE_URL}/tasks/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+export async function deleteHabit (id, habit) {
+  if (token) {
+    try {
+      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(habit),
+      });
 
-    const data = await response.json()
-    if (!response.ok) {
-    throw data; 
+      if (!response.ok) {
+        let errorMessage = "Failed to delete"
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch {}  // Ignore if no JSON in error response
+        throw new Error(errorMessage);
+      }
+
+      if (response.status === 204 || response.headers.get('content-length') === '0') {
+        return null;  // or return { success: true } if you prefer
+      }
+      console.log('Status:', response.status);
+      console.log('Content-Type:', response.headers.get('content-type'));
+      console.log('Content-Length:', response.headers.get('content-length'));
+      const text = await response.text();
+      console.log('Raw body:', text || '(empty)');
+
+      return await response.json();
+
+    } catch (error) {
+      console.error(error);
     }
-
-    console.log("Deleted:", data)
     
-  } catch (error) {
-    console.error(error);
   }
+}
+
+export async function updateHabit(id, habit) {
+  if (token) {
+    try {
+      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(habit),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update Habit");
+      }
+
+      return await response.json();
+
+    } catch (error) {
+      console.error(error);
+    }
+    
+  }
+}
+
+export async function trackTask(taskId, trackedDate, isCompleted) {
+  const response = await fetch(`${baseUrl}/tasks/${taskId}/track`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${getToken()}`,  // Bearer token required
+    },
+    body: JSON.stringify({
+      tracked_date: trackedDate,   // Must be "MM/DD/YYYY"
+      is_completed: isCompleted,  // true or false
+    }),
+  });
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to track task';
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorMessage;
+    } catch {}  // ignore if no JSON
+    throw new Error(errorMessage);
+  }
+
+  // Success: 201 Created → parse the returned tracking record
+  return await response.json();
 }

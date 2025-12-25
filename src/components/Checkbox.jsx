@@ -10,6 +10,7 @@ function Checkbox({checked, onToggle}) {
         cursor-pointer transition-all duration-200
         ${checked ? "bg-primary border-none" : "bg-white border border-black"}
         `}
+      
     >
       {checked && (
         <div className="bg-primary rounded-full border-2 flex items-center justify-center w-4 h-4">

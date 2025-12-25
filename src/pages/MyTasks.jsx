@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { getAllHabits } from "../api";
 import Modal from "../components/Modal"
 import CreateTask from "../components/CreateTask";
+import UpdateTask from "../components/UpdateTask";
 import { deleteHabit } from "../api";
 import NoAvailableHabits from "../components/NoAvailableHabits";
 
@@ -26,6 +27,7 @@ function Tasks() {
     const [weeklyHabits, setWeeklyHabits] = useState()
     const [customHabits, setCustomHabits] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [modalContent, setModalContent] = useState("")
 
     useEffect(() => {
         const token = localStorage.getItem("token")
@@ -63,6 +65,8 @@ function Tasks() {
                             currentStreak={item.currentStreak}
                             bestStreak={item.bestStreak}
                             handleDelete={handleDelete}
+                            onTrackSuccess={() => getAllHabits()}
+                            onClickEdit={handleEdit}
                             >
                             </TaskList>
                 ));
@@ -77,6 +81,7 @@ function Tasks() {
                             currentStreak={item.currentStreak}
                             bestStreak={item.bestStreak}
                             handleDelete={handleDelete}
+                            onClickEdit={setModalContent}
                             >
                             </TaskList>
                     ))
@@ -91,6 +96,7 @@ function Tasks() {
                             currentStreak={item.currentStreak}
                             bestStreak={item.bestStreak}
                             handleDelete={handleDelete}
+                            onClickEdit={setModalContent}
                             >
                             </TaskList>
                     ))
@@ -105,6 +111,7 @@ function Tasks() {
                             currentStreak={item.currentStreak}
                             bestStreak={item.bestStreak}
                             handleDelete={handleDelete}
+                            onClickEdit={setModalContent}
                             >
                             </TaskList>
                     ))
@@ -112,11 +119,24 @@ function Tasks() {
         } 
     }
 
-    async function handleDelete(id) {
+    function handleEdit(params) {
+        setModalContent(params)
+        setIsModalOpen(true)
+    }
+
+    function handleOpenModal(par) {
+        setIsModalOpen(true)
+        setModalContent(par)
+    }
+
+    async function handleDelete(id, habit) {
         const token = localStorage.getItem("token")
-        deleteHabit(id, token).then(() => {
-            console.log("habit deleted successfully")
-            setHabits(prev => prev.filter(task => task.id !== id))
+        deleteHabit(id, habit).then(() => {
+            console.log("ID:", id, habit)
+            getAllHabits(token)
+            .then((data) => {console.log(data); setHabits(data)})
+            .catch((err) => console.error("Failed to get data:", err))
+            // setHabits(prev => prev.filter(task => task.id !== id))
         }).catch(err => console.error(err))
     }
 
@@ -128,7 +148,7 @@ function Tasks() {
                     <p className="text-gray-600 lg:text-lg font-medium">Manage your habits and track your streaks</p>
                 </div>
                 <button 
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => handleOpenModal("createTask")}
                 className="lg:px-4 px-2 py-2 bg-primary rounded-lg 
                 text-white font-medium flex items-center gap-2 hover:bg-blue-400"
                 >
@@ -168,7 +188,12 @@ function Tasks() {
             onClose={() => setIsModalOpen(false)}
             width="w-[65%]"
             >
+                {modalContent === "createTask" &&
                 <CreateTask></CreateTask>
+                }
+                {modalContent === "editHabit" &&
+                <UpdateTask></UpdateTask>
+                }
             </Modal>
         </div>
      );
