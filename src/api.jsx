@@ -182,6 +182,7 @@ export async function updateHabit(id, habit) {
         throw new Error("Failed to update Habit");
       }
 
+      console.log("Api call is successful")
       return await response.json();
 
     } catch (error) {

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SelectDaysTab from "./SelectDaysTab";
+import { updateHabit } from "../api";
+import { getAllHabits } from "../api";
 
 const days = [
   {
@@ -49,7 +51,7 @@ const schema = yup.object().shape({
   frequency: yup.string().required("Frequency is required"),
 });
 
-function UpdateTask() {
+function UpdateTask({habit, onUpdateHabit}) {
 
     const [selectedDays, setSelectedDays] = useState([])
         const [customError, setCustomError] = useState(false)
@@ -67,10 +69,20 @@ function UpdateTask() {
 
             }
           });
+
+          useEffect(() => {
+        if (habit) {
+            console.log(habit)
+            reset({
+                title: habit.title,
+                frequency: habit.frequency
+            })
+        }
+    }, [habit, reset])
     
           const frequency = watch("frequency")
     
-          const create = async (data) => {
+          const update = async (data) => {
             const token = localStorage.getItem("token")
             console.log(token);
             
@@ -86,14 +98,13 @@ function UpdateTask() {
     
             const payload = {...data, ...(data.frequency === "custom" && {custom: selectedDays})}
             console.log(payload)
-    
-            createHabit(token, payload)
-            .then(res => console.log("Task created", res))
-            .catch(err => console.log("Error:", err));
-            
+
+                updateHabit(habit.id, payload)
+                .then(res => console.log("Task updated", res))
+                .catch(err => console.log("Error:", err));
+                
             getAllHabits(token)
             cancel()
-    
           }
     
           const cancel = async () => {
@@ -125,7 +136,7 @@ function UpdateTask() {
                 <header className="text-xl font-semibold">Update Task</header>
                 <p className="text-gray-700">Add a new habit to track your progress</p>
               </div>
-              <form className="space-y-6" onSubmit={handleSubmit(create)}>
+              <form className="space-y-6" onSubmit={handleSubmit(update)}>
                 <div className="flex flex-col gap-1">
                   <label className="font-semibold">Task Name</label>
                   <input
@@ -188,7 +199,7 @@ function UpdateTask() {
                     <button 
                     type="submit"
                     className="hover:bg-blue-500 rounded-md bg-blue-400 text-white w-full font-medium py-2"
-                    >Create Task
+                    >Update Task
                     </button>
                     <button 
                     onClick={cancel}

@@ -56,7 +56,7 @@ function TaskList({task, type, currentStreak, bestStreak, handleDelete, habit, o
           <span className="text-xs p-1 bg-gray-100 rounded-xl">{type}</span>
         </div>
         <div className="flex items-center gap-8">
-          <LuPencil onClick={() => onClickEdit("editHabit")} className="text-lg cursor-pointer" />
+          <LuPencil onClick={() => onClickEdit("editHabit", habit)} className="text-lg cursor-pointer" />
           <MdDelete
           onClick={() => handleDelete(habit.id, habit)}
           className="text-xl text-red-500 cursor-pointer" 

@@ -28,6 +28,7 @@ function Tasks() {
     const [customHabits, setCustomHabits] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [modalContent, setModalContent] = useState("")
+    const [editingHabit, setEditingHabit] = useState(null)
 
     useEffect(() => {
         const token = localStorage.getItem("token")
@@ -66,7 +67,7 @@ function Tasks() {
                             bestStreak={item.bestStreak}
                             handleDelete={handleDelete}
                             onTrackSuccess={() => getAllHabits()}
-                            onClickEdit={handleEdit}
+                            onClickEdit={handleUpdateHabit}
                             >
                             </TaskList>
                 ));
@@ -119,8 +120,9 @@ function Tasks() {
         } 
     }
 
-    function handleEdit(params) {
-        setModalContent(params)
+    function handleUpdateHabit(render, habit) {
+        setEditingHabit(habit)
+        setModalContent(render)
         setIsModalOpen(true)
     }
 
@@ -192,7 +194,10 @@ function Tasks() {
                 <CreateTask></CreateTask>
                 }
                 {modalContent === "editHabit" &&
-                <UpdateTask></UpdateTask>
+                <UpdateTask
+                habit={editingHabit}
+                onUpdateHabit={handleUpdateHabit}
+                ></UpdateTask>
                 }
             </Modal>
         </div>
