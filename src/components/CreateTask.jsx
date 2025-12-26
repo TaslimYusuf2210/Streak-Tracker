@@ -84,10 +84,17 @@ function CreateTask() {
         console.log(payload)
 
         createHabit(token, payload)
-        .then(res => console.log("Task created", res))
-        .catch(err => console.log("Error:", err));
+        .then(res => {
+          console.log("Task created", res)
+          alert("Habit created Successfully")
+          getAllHabits(token)
+        })
+        .catch((err) => {
+          console.log("Error:", err)
+          alert("Failed to create Habit")
+        });
         
-        getAllHabits(token)
+        
         cancel()
 
       }

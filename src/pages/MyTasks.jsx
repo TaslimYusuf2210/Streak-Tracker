@@ -135,11 +135,15 @@ function Tasks() {
         const token = localStorage.getItem("token")
         deleteHabit(id, habit).then(() => {
             console.log("ID:", id, habit)
+            alert("Habit successfully deleted")
             getAllHabits(token)
             .then((data) => {console.log(data); setHabits(data)})
             .catch((err) => console.error("Failed to get data:", err))
             // setHabits(prev => prev.filter(task => task.id !== id))
-        }).catch(err => console.error(err))
+        }).catch((err) => {
+            console.error(err)
+            alert("Failed to delete Habit")
+        })
     }
 
     return ( 

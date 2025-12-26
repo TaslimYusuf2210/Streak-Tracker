@@ -66,7 +66,6 @@ function UpdateTask({habit, onUpdateHabit}) {
             defaultValues: {
                 title: "",
                 frequency: "",
-
             }
           });
 
@@ -79,6 +78,17 @@ function UpdateTask({habit, onUpdateHabit}) {
             })
         }
     }, [habit, reset])
+
+    useEffect(() => {
+  if (!habit) return;
+
+  // Populate selected days when editing
+  if (habit.frequency === "custom" && Array.isArray(habit.custom)) {
+    setSelectedDays(habit.custom);
+  } else {
+    setSelectedDays([]);
+  }
+}, [habit]);
     
           const frequency = watch("frequency")
     
@@ -100,10 +110,17 @@ function UpdateTask({habit, onUpdateHabit}) {
             console.log(payload)
 
                 updateHabit(habit.id, payload)
-                .then(res => console.log("Task updated", res))
-                .catch(err => console.log("Error:", err));
+                .then((res) => {
+                    console.log("Task updated", res)
+                    alert("Habit updated successfully")
+                    getAllHabits(token)
+                })
+                .catch((err) => {
+                    console.log("Error:", err)
+                    alert("Failed to update habit")
+                });
                 
-            getAllHabits(token)
+            
             cancel()
           }
     
