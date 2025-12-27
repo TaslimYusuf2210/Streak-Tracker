@@ -192,8 +192,35 @@ export async function updateHabit(id, habit) {
   }
 }
 
+export async function updateProfile(profile) {
+  if (token) {
+    try {
+      const response = await fetch(`${BASE_URL}/user`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(profile),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update User's profile");
+      }
+
+      console.log("API call successful")
+      return await response.json();
+
+    } catch (error) {
+      console.error(error);
+    }
+    
+  }
+}
+
 export async function trackTask(taskId, trackedDate, isCompleted) {
-  const response = await fetch(`${baseUrl}/tasks/${taskId}/track`, {
+  const response = await fetch(`${BASE_URL}/tasks/${taskId}/track`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

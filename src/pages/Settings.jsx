@@ -1,12 +1,53 @@
 import { useState } from "react";
 import ToggleSwitch from "../components/ToggleSwitch";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { updateProfile } from "../api";
+import { toast } from "react-toastify";
+
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required("Please enter your new name"),
+  email: yup
+      .string()
+      .email("Invalid email format")
+      .required("Please enter your new email"),
+    password: yup.string().required("Password is required"),
+    password_confirmation: yup.string().oneOf([yup.ref("password"), null], "Passwords must match").required("Please confirm your password"),
+});
 
 function Settings() {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+      } = useForm({
+        resolver: yupResolver(schema),
+      });
+
     const [on, setOn] = useState(true)
     const [emailNotification, setEmailNotification] = useState(false)
     const [streakAlert, setStreakAlert] = useState(false)
     const [dailySummary, setDailySummary] = useState(false)
     const [darkMode, setDarkMode] = useState(false)
+
+    async function onSaveChanges(data) {
+        console.log(data)
+        try {
+            const response = await updateProfile(data)
+            if (response?.ok) {
+                    toast.success("Profile updated successfully")
+                    reset()
+                  } 
+        } catch (error) {
+            toast.error("Profile update failed")
+            console.error(error)
+        }
+    }
+
 
     return ( 
         <div className="lg:mr-28">
@@ -17,14 +58,42 @@ function Settings() {
             <div className="bg-white shadow-lg rounded-xl border mt-6 border-gray-300 p-6">
                 <header className="font-semibold text-gray-900 text-[22px]">Profile</header>
                 <p className="text-gray-500 mb-4">Update your profile</p>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit(onSaveChanges)} className="space-y-4">
                     <div className="flex flex-col gap-1">
                         <label className="text-gray-700 font-medium">Name</label>
-                        <input type="text" placeholder="John Doe" className="border rounded-md border-gray-300 shadow py-2 px-4"/>
+                        <input {...register("name")} type="text" placeholder="John Doe" className="border rounded-md border-gray-300 shadow py-2 px-4"/>
+                        {errors.name && (
+                        <p className="text-sm text-red-500 font-light">
+                            {errors.name.message}
+                        </p>
+                        )}
                     </div>
                     <div className="flex flex-col gap-1">
                         <label className="text-gray-700 font-medium">Email</label>
-                        <input type="text" placeholder="John@Example.com" className="border rounded-md border-gray-300 shadow py-2 px-4"/>
+                        <input {...register("email")} type="email" placeholder="John@Example.com" className="border rounded-md border-gray-300 shadow py-2 px-4"/>
+                        {errors.email && (
+                        <p className="text-sm text-red-500 font-light">
+                            {errors.email.message}
+                        </p>
+                        )}
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label className="text-gray-700 font-medium">Password</label>
+                        <input {...register("password")} type="password" placeholder="John@Example.com" className="border rounded-md border-gray-300 shadow py-2 px-4"/>
+                        {errors.password && (
+                        <p className="text-sm text-red-500 font-light">
+                            {errors.password.message}
+                        </p>
+                        )}
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label className="text-gray-700 font-medium">Confirm password</label>
+                        <input {...register("password_confirmation")} type="password" placeholder="John@Example.com" className="border rounded-md border-gray-300 shadow py-2 px-4"/>
+                        {errors.password_confirmation && (
+                        <p className="text-sm text-red-500 font-light">
+                            {errors.password_confirmation.message}
+                        </p>
+                        )}
                     </div>
                     <button className="font-medium bg-primary hover:bg-blue-400 rounded-md py-2 px-4 text-white">Save Changes</button>
                 </form>

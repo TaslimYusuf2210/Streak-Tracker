@@ -117,7 +117,9 @@ function Tasks() {
                             </TaskList>
                     ))
             } 
-        } 
+        } else {
+            <div>Loading...</div>
+        }
     }
 
     function handleUpdateHabit(render, habit) {
