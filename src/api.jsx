@@ -82,25 +82,28 @@ export async function getAnalytics(token) {
 }
 
 export async function getAllHabits(token) {
-  try {
-    const response = await fetch(`${BASE_URL}/tasks`,{
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch habits")
+  if (token) {
+    try {
+      const response = await fetch(`${BASE_URL}/tasks`,{
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch habits")
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching habits:", error)
+      throw error;
     }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching habits:", error)
-    throw error;
+    
   }
 }
 
@@ -219,29 +222,33 @@ export async function updateProfile(profile) {
   }
 }
 
-export async function trackTask(taskId, trackedDate, isCompleted) {
-  const response = await fetch(`${BASE_URL}/tasks/${taskId}/track`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${getToken()}`,  // Bearer token required
-    },
-    body: JSON.stringify({
-      tracked_date: trackedDate,   // Must be "MM/DD/YYYY"
-      is_completed: isCompleted,  // true or false
-    }),
-  });
-
-  if (!response.ok) {
-    let errorMessage = 'Failed to track task';
+export async function trackTask(taskId, payload) {
+  if(token) {
     try {
-      const errorData = await response.json();
-      errorMessage = errorData.message || errorMessage;
-    } catch {}  // ignore if no JSON
-    throw new Error(errorMessage);
-  }
+      const response = await fetch(`${BASE_URL}/tasks/${taskId}/track`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,  
+        },
+        body: JSON.stringify(payload
+          // tracked_date: trackedDate,   // Must be "MM/DD/YYYY"
+          // is_completed: isCompleted,  // true or false
+        ),
+      });
+    
+      if (!response.ok) {
+        // let errorMessage = 'Failed to track task';
+        console.log("response not okay")
+      }
+    
+      // Success: 201 Created → parse the returned tracking record
+      return await response.json();
+      
+    } catch (error) {
+      console.error(error)
+    }
 
-  // Success: 201 Created → parse the returned tracking record
-  return await response.json();
+  }
 }

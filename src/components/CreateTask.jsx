@@ -51,7 +51,8 @@ const schema = yup.object().shape({
   frequency: yup.string().required("Frequency is required"),
 });
 
-function CreateTask() {
+function CreateTask({closeModal}) {
+    const [isLoading, setIsLoading] = useState(false)
     const [selectedDays, setSelectedDays] = useState([])
     const [customError, setCustomError] = useState(false)
     const {
@@ -79,24 +80,26 @@ function CreateTask() {
         console.log(data);
 
         setCustomError(false)
+        setIsLoading(true)
 
         const payload = {...data, ...(data.frequency === "custom" && {custom: selectedDays})}
         console.log(payload)
 
         createHabit(token, payload)
         .then(res => {
+          closeModal(false)
           console.log("Task created", res)
+          setIsLoading(false)
+          cancel()
           alert("Habit created Successfully")
           getAllHabits(token)
         })
         .catch((err) => {
           console.log("Error:", err)
+          setIsLoading(false)
+          cancel()
           alert("Failed to create Habit")
         });
-        
-        
-        cancel()
-
       }
 
       const cancel = async () => {
@@ -193,7 +196,7 @@ function CreateTask() {
             <button 
             type="submit"
             className="hover:bg-blue-500 rounded-md bg-blue-400 text-white w-full font-medium py-2"
-            >Create Task
+            >{isLoading ? "Creating Task..." : "Create Task"}
             </button>
             <button 
             onClick={cancel}

@@ -7,16 +7,6 @@ import Modal from "../components/Modal"
 import CreateTask from "../components/CreateTask";
 import UpdateTask from "../components/UpdateTask";
 import { deleteHabit } from "../api";
-import NoAvailableHabits from "../components/NoAvailableHabits";
-
-const testTasks = [
-  { id: 1, task: "Morning Exercise", type: "Daily", currentStreak: 7, bestStreak: 14 },
-  { id: 2, task: "Read for 30 minutes", type: "Daily", currentStreak: 14, bestStreak: 21 },
-  { id: 3, task: "Weekly Report", type: "Weekly", currentStreak: 5, bestStreak: 8 },
-  { id: 4, task: "Team Meeting", type: "Weekly", currentStreak: 5, bestStreak: 8 },
-  { id: 5, task: "Meditate", type: "Daily", currentStreak: 21, bestStreak: 21 },
-  { id: 6, task: "Practice Guitar", type: "Custom", currentStreak: 3, bestStreak: 10 },
-];
 
 const habitTabs = ["All", "Daily", "Weekly", "Custom"];
 
@@ -55,71 +45,37 @@ function Tasks() {
     }, [habits])
 
     function renderHabits() {
-        if (habits.length > 0) {
-            if (filter === "All") {
-                return habits.map((item) => (
-                            <TaskList
-                            key={item.id}
-                            habit={item}
-                            task={item.title}
-                            type={item.frequency}
-                            currentStreak={item.currentStreak}
-                            bestStreak={item.bestStreak}
-                            handleDelete={handleDelete}
-                            onTrackSuccess={() => getAllHabits()}
-                            onClickEdit={handleUpdateHabit}
-                            >
-                            </TaskList>
-                ));
-            } else if (filter === "Daily") {
-                return dailyHabits
-                    .map((item) => (
-                            <TaskList
-                            key={item.id}
-                            habit={item}
-                            task={item.title}
-                            type={item.frequency}
-                            currentStreak={item.currentStreak}
-                            bestStreak={item.bestStreak}
-                            handleDelete={handleDelete}
-                            onClickEdit={setModalContent}
-                            >
-                            </TaskList>
-                    ))
-            } else if (filter === "Weekly") {
-                return weeklyHabits
-                    .map((item) => (
-                            <TaskList
-                            key={item.id}
-                            habit={item}
-                            task={item.title}
-                            type={item.frequency}
-                            currentStreak={item.currentStreak}
-                            bestStreak={item.bestStreak}
-                            handleDelete={handleDelete}
-                            onClickEdit={setModalContent}
-                            >
-                            </TaskList>
-                    ))
-            } else if (filter === "Custom") {
-                return customHabits
-                    .map((item) => (
-                            <TaskList
-                            key={item.id}
-                            habit={item}
-                            task={item.title}
-                            type={item.frequency}
-                            currentStreak={item.currentStreak}
-                            bestStreak={item.bestStreak}
-                            handleDelete={handleDelete}
-                            onClickEdit={setModalContent}
-                            >
-                            </TaskList>
-                    ))
-            } 
-        } else {
-            <div>Loading...</div>
+        let list = [];
+
+        if (filter === "All") {
+            list = habits;
+        } else if (filter === "Daily") {
+            list = dailyHabits;
+        } else if (filter === "Weekly") {
+            list = weeklyHabits;
+        } else if (filter === "Custom") {
+            list = customHabits;
         }
+
+        // ⛔ No habits for this filter
+        if (!list || list.length === 0) {
+            return <div className="text-center text-gray-500 h-full grid place-items-center">No habit available</div>;
+        }
+
+        // ✅ Render habits
+        return list.map((item) => (
+            <TaskList
+            key={item.id}
+            habit={item}
+            task={item.title}
+            type={item.frequency}
+            currentStreak={item.currentStreak}
+            bestStreak={item.bestStreak}
+            handleDelete={handleDelete}
+            onTrackSuccess={() => getAllHabits()}
+            onClickEdit={handleUpdateHabit}
+            />
+        ));
     }
 
     function handleUpdateHabit(render, habit) {
@@ -149,7 +105,7 @@ function Tasks() {
     }
 
     return ( 
-        <div>
+        <div className="h-full">
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold">My Tasks</h1>
@@ -164,32 +120,13 @@ function Tasks() {
                 <span>Add Task</span> 
                 </button>
             </div>
-            <div>
+            <div className="h-full">
                 <TaskTabs 
                 currentTab={setFilter}
                 tabs= {habitTabs}
                 >
                 </TaskTabs>
                 {renderHabits() }
-                {/* {filter == "All" && habits.length > 0 ?
-                    habits.map((item) => (
-                        <TaskList
-                        key={item.id}
-                        habit={item}
-                        task={item.title}
-                        type={item.frequency}
-                        currentStreak={item.currentStreak}
-                        bestStreak={item.bestStreak}
-                        handleDelete={handleDelete}
-                        >
-                        </TaskList>
-                    )):
-                    <div className="flex justify-center items-center min-h-[50vh]">
-                        <p>
-                        "No available habits"
-                        </p>
-                    </div>
-                } */}
             </div>
             <Modal
             isOpen={isModalOpen}
@@ -197,7 +134,9 @@ function Tasks() {
             width="w-[65%]"
             >
                 {modalContent === "createTask" &&
-                <CreateTask></CreateTask>
+                <CreateTask
+                closeModal={setIsModalOpen}
+                ></CreateTask>
                 }
                 {modalContent === "editHabit" &&
                 <UpdateTask

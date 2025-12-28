@@ -85,6 +85,7 @@ function Dashboard() {
         getAnalytics(token)
         .then((data) => {console.log(data); setAnalyticsData(data)})
         .catch((err) => console.error("Failed to get analytics data:", err));
+
     }, [])
 
     return ( 
@@ -109,7 +110,7 @@ function Dashboard() {
                 title="Completed Today"
                 icon= {<CiCircleCheck />}
                 value={analyticsData? analyticsData.data.completed_today : "Loading"}
-                footer="63% completion rate"
+                footer={`${analyticsData? analyticsData.data.completion_rate : "___"}% completion rate`}
                 iconColor="text-gray-500"
                 mainTextColor="text-primary"
                 >
@@ -150,7 +151,7 @@ function Dashboard() {
                     <button className="px-4 py-2 bg-primary rounded-lg text-white font-medium hover:bg-blue-400">View All Tasks</button>
                 </div>
                 <div className="mt-8 space-y-4">
-                    {loading ? <p>Loading...</p> : 
+                    {loading ? <div className="grid place-items-center text-red-500">Feature not available</div> : 
 
                     habits.map((habit, index) => (
                         <Task

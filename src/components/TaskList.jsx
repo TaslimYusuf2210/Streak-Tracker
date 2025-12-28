@@ -11,12 +11,20 @@ function TaskList({task, type, currentStreak, bestStreak, handleDelete, habit, o
 
   async function handleToggle() {
     if (loading) return;
-    const nextChecked = !checked;
-    setChecked(nextChecked); // optimistic UI update
+    const nextChecked = !checked
+    setChecked((prev) => !prev); // optimistic UI update
     setLoading(true);
+    const today = new Date()
+    const tracked_date = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`
+    let is_completed = true
+
+    const payload = {
+      tracked_date,
+      is_completed
+    }
 
     try {
-      await trackTask(habit.id, nextChecked);
+      await trackTask(habit.id, payload);
 
       // Optional: notify parent to refresh streaks/data
       if (onTrackSuccess) {
