@@ -23,6 +23,7 @@ function TaskList({task, type, currentStreak, bestStreak, handleDelete, habit, o
       is_completed
     }
 
+    console.log(payload)
     try {
       await trackTask(habit.id, payload);
 

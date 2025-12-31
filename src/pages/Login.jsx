@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api";
 import { toast } from "react-toastify";
+import {useState} from "react"
 
 const schema = yup.object().shape({
   email: yup
@@ -15,6 +16,8 @@ const schema = yup.object().shape({
 });
 
 function Login() {
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -30,6 +33,7 @@ function Login() {
 
     try {
       const response = await loginUser(data)
+      setLoading(true)
   
       if (response?.status === "success") {
         toast.success("Login successful")
@@ -43,6 +47,8 @@ function Login() {
     } catch (error) {
       toast.error("Invalid email or password")
       console.error("Login error:", error)
+    } finally {
+      setLoading(false)
     }
   };
   return (
@@ -82,10 +88,11 @@ function Login() {
             )}
           </div>
           <button
+            disabled={loading}
             type="submit"
             className="bg-primary text-white rounded-md w-full font-medium py-2"
           >
-            Sign In
+            {loading ? "Loading..." : "Sign In"}
           </button>
         </form>
         <p className="text-gray-600 font-medium">
