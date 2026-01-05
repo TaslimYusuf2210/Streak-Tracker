@@ -2,7 +2,7 @@
 
 A modern web application for tracking habits and building streaks. Users can create daily, weekly, or custom-frequency habits, monitor progress on a clean dashboard, and stay motivated with streak counters and completion stats.
 
-**Live Demo:** [Insert live demo link if deployed, e.g., Vercel/Netlify]  
+**Live Demo:** [streaktracker-eyepatch.netlify.app]  
 **Note:** Includes user authentication (login/register) – screenshots focus on core features.
 
 ## Features
